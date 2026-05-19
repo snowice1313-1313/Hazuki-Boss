@@ -2,10 +2,38 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>葉月堂 V8.10</title><script src="https://cdn.tailwindcss.com"></script>
-<style>@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');:root{--hazuki-green:#1A4C3F;--hazuki-gold:#D4AF37;--dark-bg:#121212;--dark-card:#1f2937;--dark-border:#374151}body{font-family:'Noto Sans TC',sans-serif;background-color:var(--dark-bg);color:#e5e7eb;overflow-x:hidden}.bg-hazuki{background-color:var(--hazuki-green)}.text-gold{color:var(--hazuki-gold)}.border-gold{border-color:var(--hazuki-gold)}.input-std{border:1px solid var(--dark-border);padding:12px;border-radius:6px;width:100%;background-color:#374151;color:#f3f4f6;font-size:16px;font-weight:500}.input-std:focus{border-color:var(--hazuki-gold);outline:none;background-color:#1f2937}.input-std:read-only{background-color:#1f2937;color:#9ca3af;border-color:#374151}.unit-tag{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:0.75rem;font-weight:700;pointer-events:none}.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:50;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}</style>
+<title>葉月堂 V8.10</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-title" content="葉月堂">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes"><script src="https://cdn.tailwindcss.com"></script>
+<style>@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');:root{--hazuki-green:#1A4C3F;--hazuki-gold:#D4AF37;--dark-bg:#121212;--dark-card:#1f2937;--dark-border:#374151}body{font-family:'Noto Sans TC',sans-serif;background-color:var(--dark-bg);color:#e5e7eb;overflow-x:hidden}.bg-hazuki{background-color:var(--hazuki-green)}.text-gold{color:var(--hazuki-gold)}.border-gold{border-color:var(--hazuki-gold)}.input-std{border:1px solid var(--dark-border);padding:12px;border-radius:6px;width:100%;background-color:#374151;color:#f3f4f6;font-size:16px;font-weight:500}.input-std:focus{border-color:var(--hazuki-gold);outline:none;background-color:#1f2937}.input-std:read-only{background-color:#1f2937;color:#9ca3af;border-color:#374151}.unit-tag{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:0.75rem;font-weight:700;pointer-events:none}.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:50;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+#loginScreen{position:fixed;inset:0;background:linear-gradient(160deg,#0d2b1f 0%,#1A4C3F 60%,#0d2b1f 100%);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;}
+#loginScreen .login-box{width:100%;max-width:360px;background:rgba(255,255,255,0.05);border:1px solid var(--hazuki-gold);border-radius:20px;padding:36px 28px;box-shadow:0 8px 40px rgba(0,0,0,0.6);}
+#loginScreen .login-logo{font-size:2.6rem;font-weight:900;color:var(--hazuki-gold);letter-spacing:0.15em;text-align:center;margin-bottom:4px;}
+#loginScreen .login-sub{font-size:0.7rem;color:#9ca3af;text-align:center;letter-spacing:0.2em;margin-bottom:32px;}
+#loginScreen .login-input{width:100%;background:#1f2937;border:1px solid #374151;border-radius:10px;padding:14px 16px;color:#f3f4f6;font-size:16px;margin-bottom:14px;outline:none;transition:border 0.2s;}
+#loginScreen .login-input:focus{border-color:var(--hazuki-gold);}
+#loginScreen .login-btn{width:100%;background:var(--hazuki-gold);color:#1A4C3F;font-size:1rem;font-weight:900;padding:15px;border-radius:10px;border:none;margin-top:8px;letter-spacing:0.1em;cursor:pointer;transition:opacity 0.2s;}
+#loginScreen .login-btn:active{opacity:0.8;}
+#loginScreen .login-err{color:#f87171;font-size:0.8rem;text-align:center;margin-top:10px;min-height:20px;font-weight:700;}
+</style>
 </head>
 <body class="pb-32">
+
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">葉月堂</div>
+    <div class="login-sub">HADUKIDOU · 成本管理系統</div>
+    <input class="login-input" type="text" id="loginUser" placeholder="帳號" autocomplete="off" autocorrect="off" autocapitalize="off">
+    <input class="login-input" type="password" id="loginPass" placeholder="密碼" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">🔐 登入</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<div id="mainApp" style="display:none">
 <div class="bg-hazuki text-white pt-6 pb-20 px-4 shadow-lg border-b-2 border-gold"><div class="max-w-4xl mx-auto flex justify-between items-center"><div><h1 class="text-2xl font-bold tracking-widest text-gold">HAZUKI 葉月堂</h1><p class="text-[10px] text-gray-300 mt-1">繁中回歸版 V8.10</p></div></div></div>
 <div class="max-w-4xl mx-auto px-4 -mt-12">
 <div class="grid grid-cols-3 gap-2 mb-4">
@@ -27,7 +55,7 @@
 <div id="recipeModal" class="fixed inset-0 bg-black bg-opacity-80 hidden z-50 flex items-end md:items-center justify-center"><div class="bg-gray-900 w-full md:w-2/3 rounded-t-2xl h-[85vh] flex flex-col overflow-hidden border border-gray-800"><div class="bg-hazuki p-4 flex justify-between items-center border-b border-hazuki"><h3 class="font-bold text-gold">產品配方庫</h3><button onclick="closeRecipeModal()" class="text-white text-3xl px-4">✕</button></div><div class="p-3 bg-gray-800 flex flex-col gap-2"><input type="text" id="recipeSearch" oninput="filterRecipes()" placeholder="🔍 搜尋名稱..." class="input-std py-2 bg-gray-900 border-gray-700"><div class="flex gap-1 bg-gray-900 p-1 rounded border border-gray-700"><button id="tab-all" onclick="filterRecipes('all')" class="flex-1 py-2 text-xs font-bold rounded bg-hazuki">全部</button><button id="tab-recipe" onclick="filterRecipes('recipe')" class="flex-1 py-2 text-xs font-bold rounded text-gray-400 bg-transparent">配方</button><button id="tab-resale" onclick="filterRecipes('resale')" class="flex-1 py-2 text-xs font-bold rounded text-gray-400 bg-transparent">轉賣</button></div></div><div class="flex-1 overflow-y-auto p-4 bg-gray-900" id="recipeListContainer"></div></div></div>
 <script>
 const DB_KEY='hazuki_ingredients_v2',RECIPE_KEY='hazuki_recipes_v2';let ingredients=[],dbItems=[],savedRecipes=[],currentMode='recipe',currentFilter='all',confirmCallback=null;
-window.onload=function(){try{loadDb();loadRecipes();addIngredientRow()}catch(e){}};
+// onload handled by login logic below
 window.onpopstate=function(e){if(document.getElementById('confirmModal').style.display==='flex'){closeConfirm(true)}else if(!document.getElementById('recipeModal').classList.contains('hidden')){closeRecipeModal(true)}else if(!document.getElementById('dbModal').classList.contains('hidden')){closeDbModal(true)}};
 function hazukiConfirm(msg,cb){document.getElementById('confirmTitle').innerText=msg;document.getElementById('confirmModal').style.display='flex';confirmCallback=cb;history.pushState({modal:true},null)}
 function closeConfirm(isBack){document.getElementById('confirmModal').style.display='none';confirmCallback=null;if(!isBack&&history.state&&history.state.modal)history.back()}
@@ -56,6 +84,9 @@ function renderDbList(){const c=document.getElementById('dbList');c.innerHTML=''
 function editDbItem(i){const it=dbItems[i];document.getElementById('dbName').value=it.name;document.getElementById('dbPrice').value=it.price;document.getElementById('dbWeight').value=it.weight;document.getElementById('dbUnit').value=it.unit||'';document.getElementById('editIndex').value=i;document.getElementById('saveDbBtn').innerText="確認更新"}
 function askDeleteDb(i){hazukiConfirm('確定要刪除此庫存原料資料嗎？',()=>{dbItems.splice(i,1);saveDb();renderDbList();resetDbInput()})}
 function resetDbInput(){document.getElementById('dbName').value='';document.getElementById('dbPrice').value='';document.getElementById('dbWeight').value='';document.getElementById('dbUnit').value='';document.getElementById('editIndex').value='-1';document.getElementById('saveDbBtn').innerText="儲存數據"}
+function doLogin(){const u=document.getElementById('loginUser').value.trim(),p=document.getElementById('loginPass').value;if(u==='Boss'&&p==='85888588'){document.getElementById('loginScreen').style.display='none';document.getElementById('mainApp').style.display='block';sessionStorage.setItem('hazuki_auth','1')}else{document.getElementById('loginErr').innerText='帳號或密碼錯誤，請再試一次';document.getElementById('loginPass').value=''}}
+window.addEventListener('load',function(){if(sessionStorage.getItem('hazuki_auth')==='1'){document.getElementById('loginScreen').style.display='none';document.getElementById('mainApp').style.display='block'}try{loadDb();loadRecipes();addIngredientRow()}catch(e){}});
 </script>
+</div>
 </body>
 </html>
